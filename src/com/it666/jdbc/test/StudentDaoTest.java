@@ -14,12 +14,9 @@ public class StudentDaoTest {
 
 	@Test
 	public void deleteTest() {
-		Student student = new Student();
-		student.setName("honghong1");
-		student.setId(1);
 		IStudent dao = new StudentDaoImpl();
 		try {
-			dao.delete(2);
+			dao.delete(1);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -29,7 +26,7 @@ public class StudentDaoTest {
 	@Test
 	public void updateTest() {
 		Student student = new Student();
-		student.setName("honghong1");
+		student.setName("honghong11");
 		student.setId(1);
 		IStudent dao = new StudentDaoImpl();
 		try {
@@ -43,8 +40,8 @@ public class StudentDaoTest {
 	@Test
 	public void saveTest() {
 		Student student = new Student();
-		student.setName("honghong2");
-		student.setAge(20);
+		student.setName("honghong4");
+		student.setAge(21);
 		student.setUpdate_time(DbUtil.getTime());
 		IStudent dao = new StudentDaoImpl();
 		try {
