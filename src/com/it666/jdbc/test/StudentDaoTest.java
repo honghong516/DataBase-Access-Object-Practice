@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.it666.jdbc.dao.IDaoInterface;
 import com.it666.jdbc.dao.IStudent;
 import com.it666.jdbc.domain.Student;
 import com.it666.jdbc.impl.StudentDaoImpl;
@@ -14,7 +15,7 @@ public class StudentDaoTest {
 
 	@Test
 	public void deleteTest() {
-		IStudent dao = new StudentDaoImpl();
+		IDaoInterface<Student> dao = new StudentDaoImpl();
 		try {
 			dao.delete(1);
 		} catch (IOException e) {
@@ -26,9 +27,9 @@ public class StudentDaoTest {
 	@Test
 	public void updateTest() {
 		Student student = new Student();
-		student.setName("honghong11");
-		student.setId(1);
-		IStudent dao = new StudentDaoImpl();
+		student.setName("honghong1");
+		student.setId(3);
+		IDaoInterface<Student> dao = new StudentDaoImpl();
 		try {
 			dao.update(student);
 		} catch (IOException e) {
@@ -40,10 +41,10 @@ public class StudentDaoTest {
 	@Test
 	public void saveTest() {
 		Student student = new Student();
-		student.setName("honghong4");
+		student.setName("honghong5");
 		student.setAge(21);
 		student.setUpdate_time(DbUtil.getTime());
-		IStudent dao = new StudentDaoImpl();
+		IDaoInterface<Student> dao = new StudentDaoImpl();
 		try {
 			dao.save(student);
 		} catch (IOException e) {
@@ -54,7 +55,7 @@ public class StudentDaoTest {
 
 	@Test
 	public void queryTest() {
-		IStudent dao = new StudentDaoImpl();
+		IDaoInterface<Student> dao = new StudentDaoImpl();
 		List<Student> list = null;
 		try {
 			list = dao.query("honghong%");
@@ -67,11 +68,6 @@ public class StudentDaoTest {
 		}
 	}
 
-	@Test
-	public void implTest() {
-		IStudent studentDaoImpl = new StudentDaoImpl();
-
-	}
 
 	public static void main(String[] args) {
 		new DbUtil();

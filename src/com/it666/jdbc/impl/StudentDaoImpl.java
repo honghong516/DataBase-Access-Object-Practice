@@ -1,18 +1,17 @@
 package com.it666.jdbc.impl;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.it666.jdbc.dao.IStudent;
+import com.it666.jdbc.dao.IDaoInterface;
+import com.it666.jdbc.dao.IRsHandle;
 import com.it666.jdbc.domain.Student;
 import com.it666.jdbc.util.DbUtil;
 
-public class StudentDaoImpl implements IStudent {
+public class StudentDaoImpl implements IDaoInterface<Student> {
 	// load params from conf
 
 	@Override
@@ -51,8 +50,27 @@ public class StudentDaoImpl implements IStudent {
 	public List<Student> query(String name) throws IOException {
 		// TODO Auto-generated method stub
 		String sql = "select * from student where name like ?";
-		List<Student> list = DbUtil.executeQuery(sql, name);
+		List<Student> list = DbUtil.executeQuery(sql, new StuRsHandle(), name);
 		return list;
 	}
 
+}
+
+class StuRsHandle implements IRsHandle<Student>{
+
+	@Override
+	public List<Student> rsHandle(ResultSet result) throws SQLException {
+		// TODO Auto-generated method stub
+		List<Student> list = new ArrayList<>();
+		while (result.next()) {
+			Student su = new Student();
+			su.setId(result.getInt(1));
+			su.setName(result.getString(2));
+			su.setAge(result.getInt(3));
+			su.setUpdate_time(result.getString(4));
+			list.add(su);
+		}
+		return list;
+	}
+	
 }

@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -16,7 +15,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
-import com.it666.jdbc.domain.Student;
+import com.it666.jdbc.dao.IRsHandle;
 
 public class DbUtil {
 	/*
@@ -76,8 +75,9 @@ public class DbUtil {
 		}
 	}
 	
-	public static List<Student> executeQuery(String sql, Object...params){
-		List<Student> list = new ArrayList<>();
+	public static <T>List<T> executeQuery(String sql,IRsHandle<T> rh, Object...params){
+		List<T> list = null;
+		ResultSet result = null;
 		Connection conn = DbUtil.getConnection();
 		if (conn == null) {
 			System.out.println("get connection failed");
@@ -89,20 +89,16 @@ public class DbUtil {
 			for(int i=0;i<params.length;i++) {
 				prepareStatement.setObject(i+1, params[i]);
 			}
-			ResultSet result = prepareStatement.executeQuery();
-			while (result.next()) {
-				Student su = new Student();
-				su.setId(result.getInt(1));
-				su.setName(result.getString(2));
-				su.setAge(result.getInt(3));
-				su.setUpdate_time(result.getString(4));
-				list.add(su);
-			}
+			result = prepareStatement.executeQuery();
+			list = rh.rsHandle(result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
-			DbUtil.close(conn, prepareStatement, null);
+			DbUtil.close(conn, prepareStatement, result);
 		}
 		return list;
 	}
